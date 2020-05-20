@@ -1,3 +1,10 @@
+@font-face {
+  font-family: 'PT_Sans';
+  src: url('./fonts/PT_Sans/PTSans-Bold.ttf');
+  font-style: normal;
+  font-weight: normal;
+}
+
 body{
   margin: 0px;
   padding: 0px;
@@ -8,7 +15,7 @@ body{
   margin: auto;
   display: flex;
   justify-content: space-around;
-
+  font-family: 'PT_Sans';
   height: 100vh;
   background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.4) ), url('./assets/background-def.jpg');
   background-repeat: no-repeat;

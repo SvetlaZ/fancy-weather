@@ -17,9 +17,15 @@ module.exports = {
         })
       },
       {
-        test: /\.(png|jpg|gif)$/,
+        test: /\.(png|jpg|gif|jpeg)$/,
         use: [
             'file-loader?name=assets/[ext]/[name].[ext]',
+        ],
+      },
+      {
+        test: /\.(ttf)$/,
+        use: [
+            'file-loader?name=fonts/[name].[ext]',
         ],
       }
     ]
