@@ -71,6 +71,7 @@ body{
 }
 
 .deg {
+  display: inline;
   font-size: 50px;
 }
 
@@ -98,4 +99,14 @@ body{
 
 .map-text {
   margin: 5px;
+}
+
+.weather-now-icon {
+  width: 180px;
+  height: 180px;
+}
+
+.weather-then-icon {
+  width: 64px;
+  height: 64px;
 }
