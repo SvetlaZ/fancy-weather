@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.css" rel="stylesheet" />
     <link href="dist/style.css" rel="stylesheet">
     <title>Fancy-wheather</title>
 </head>
@@ -65,13 +67,15 @@
         </form>
 
         <div class="map">
-          <img src="./src/assets/map.png" alt="map" class="map-pic">
+          <div class="map-pic" id="map"></div>
+          <!-- <img src="./src/assets/map.png" alt="map" class="map-pic"> -->
           <p class="map-text lat">56.667798</p>
           <p class="map-text lon">78.879879</p>
         </div>
       </div>
 
     </div>   
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.js"></script>
     <script src="./dist/index.js"></script>
 </body>
 

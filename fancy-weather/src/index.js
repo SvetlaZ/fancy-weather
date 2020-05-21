@@ -32,6 +32,39 @@ navigator.geolocation.getCurrentPosition(success, error, options);
 
 const input = document.querySelector('.search-input');
 
+const mapUrl = () => ``;
+const getMap = async (lon, lat) => {
+  try {
+    const response = await fetch(mapUrl(lon, lat));
+    const imgMap = await response.json();
+  } catch (e) {
+    console.log('getMap: ', e);
+  }
+};
+
+////////////////////////////////////////////////////////////////////////////////////
+
+mapboxgl.accessToken = 'pk.eyJ1Ijoic3ZldGxheiIsImEiOiJjazN5OHVkOG8wMjloM2dydTF6djc3cXFpIn0.6RG4Mu4nW3FO_IjkHX9j-g';
+const map = new mapboxgl.Map({
+  container: 'map', // container id
+  style: 'mapbox://styles/mapbox/streets-v11',
+  center: [30.33, 60.06], // starting position
+  zoom: 10, // starting zoom
+});
+
+// Add geolocate control to the map.
+map.addControl(
+  new mapboxgl.GeolocateControl({
+    positionOptions: {
+      enableHighAccuracy: true,
+    },
+    trackUserLocation: true,
+  }),
+);
+
+
+
+///////////////////////////////////////////////////////////////////////////////////
 const getCurWheather = async (city) => {
   try {
     const response = await fetch(searchUrlCurrent(city));
