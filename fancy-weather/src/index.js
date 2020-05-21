@@ -16,12 +16,16 @@ function success(pos) {
   // console.log(`Ваше текущее метоположение широта: ${crd.latitude}`);
   // console.log(`Ваше текущее метоположение долгота: ${crd.longitude}`);
   // console.log(`Плюс-минус ${crd.accuracy} метров.`);
-  document.querySelector('.lat').innerText = `Latitude: ${(crd.latitude).toFixed(2)}`; // текущая ширина
-  document.querySelector('.lon').innerText = `Longitude: ${(crd.longitude).toFixed(2)}`; // текущая долгота
+  const lat = crd.latitude.toFixed(2);
+  const lon = crd.longitude.toFixed(2);
+  document.querySelector('.lat').innerText = `Latitude: ${lat}`; // текущая ширина
+  document.querySelector('.lon').innerText = `Longitude: ${lon}`; // текущая долгота
 
-  searchUrlCurrent = () => `https://api.weatherapi.com/v1/forecast.json?key=${apiKeyWheather}&q=${(crd.latitude).toFixed(2)},${(crd.longitude).toFixed(2)}`; // Latitude and Longitude
+  searchUrlCurrent = () => `https://api.weatherapi.com/v1/forecast.json?key=${apiKeyWheather}&q=${lat},${lon}`; // Latitude and Longitude
+  searchUrlFut = () => `https://api.weatherapi.com/v1/forecast.json?key=${apiKeyWheather}&q=${lat},${lon}&days=3`; // Latitude and Longitude
   getCurWheather();
-
+  getWheatherFuture();
+  getMap(lat, lon);
 }
 
 function error(err) {
@@ -32,36 +36,30 @@ navigator.geolocation.getCurrentPosition(success, error, options);
 
 const input = document.querySelector('.search-input');
 
-const mapUrl = () => ``;
-const getMap = async (lon, lat) => {
-  try {
-    const response = await fetch(mapUrl(lon, lat));
-    const imgMap = await response.json();
-  } catch (e) {
-    console.log('getMap: ', e);
-  }
-};
-
 ////////////////////////////////////////////////////////////////////////////////////
 
-mapboxgl.accessToken = 'pk.eyJ1Ijoic3ZldGxheiIsImEiOiJjazN5OHVkOG8wMjloM2dydTF6djc3cXFpIn0.6RG4Mu4nW3FO_IjkHX9j-g';
-const map = new mapboxgl.Map({
-  container: 'map', // container id
-  style: 'mapbox://styles/mapbox/streets-v11',
-  center: [30.33, 60.06], // starting position
-  zoom: 10, // starting zoom
-});
+function getMap(lat, lon) {
+  mapboxgl.accessToken = 'pk.eyJ1Ijoic3ZldGxheiIsImEiOiJjazN5OHVkOG8wMjloM2dydTF6djc3cXFpIn0.6RG4Mu4nW3FO_IjkHX9j-g';
+  const map = new mapboxgl.Map({
+    container: 'map', // container id
+    style: 'mapbox://styles/mapbox/streets-v11',
+    center: [lon, lat], // starting position
+    zoom: 10, // starting zoom
+  });
 
-// Add geolocate control to the map.
-map.addControl(
-  new mapboxgl.GeolocateControl({
-    positionOptions: {
-      enableHighAccuracy: true,
-    },
-    trackUserLocation: true,
-  }),
-);
-
+  // Add geolocate control to the map.
+  map.addControl(
+    new mapboxgl.GeolocateControl({
+      positionOptions: {
+        enableHighAccuracy: true,
+      },
+      trackUserLocation: true,
+    }),
+  );
+  const marker = new mapboxgl.Marker()
+    .setLngLat([lon, lat])
+    .addTo(map);
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -101,6 +99,8 @@ const getCurWheather = async (city) => {
     document.querySelector('.humidity').innerText = `humidity: ${humidity}%`;
     document.querySelector('.lat').innerText = `Latitude: ${lat}`;
     document.querySelector('.lon').innerText = `Longitude: ${lon}`;
+
+    getMap(lat, lon);
   } catch (e) {
     console.log('getCurWheather: ', e);
   }
