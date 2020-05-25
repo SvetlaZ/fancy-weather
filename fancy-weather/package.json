@@ -23,5 +23,7 @@
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11"
   },
-  "dependencies": {}
+  "dependencies": {
+    "moment-timezone": "^0.5.31"
+  }
 }

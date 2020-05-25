@@ -27,12 +27,11 @@
           </select>
         </div>
 
-        <div class="geo"><p class="geo-text">Saint-Petersburg, Russia</p></div>
+        <div class="geo"><p class="geo-text">Saint-Petersburg,<br>Russia</p></div>
         <div class="date">Mon 18 May 12:00</div>
 
         <div class="weather-now">
           <p class="weather-now-deg">10&deg;C</p>
-          <!-- <p class="weather-now-icon">icon</p> -->
           <div class="weather-now-dop">
             <p class="dop description">overcast</p>
             <p class="dop feelLike">feel like 8&deg;C</p>
@@ -62,13 +61,13 @@
 
       <div class="col col-2">
         <form class="search" id="search">
-          <input type="search" placeholder="Search city or ZIP" class="search-input">
+          <input type="search" placeholder="Search city" class="search-input">
           <button form="search" type="submit" class="search-btn">Search</button>
         </form>
-
+        <p class="err">Please, use search.</p>
         <div class="map">
           <div class="map-pic" id="map"></div>
-          <!-- <img src="./src/assets/map.png" alt="map" class="map-pic"> -->
+          <img src="./src/assets/map.png" alt="map" class="map-def">
           <p class="map-text lat">56.667798</p>
           <p class="map-text lon">78.879879</p>
         </div>

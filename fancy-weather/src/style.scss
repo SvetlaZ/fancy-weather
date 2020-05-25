@@ -38,6 +38,10 @@ body{
   margin-bottom: 10px;
 }
 
+.date {
+  font-size: 18px;
+}
+
 .weather-now {
   display: flex;
   justify-content: space-between;
@@ -87,9 +91,11 @@ body{
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  margin-top: 10px;
 }
 
-.map-pic {
+.map-pic,
+.map-def {
   width: 300px;
   height: 300px;
   margin-top: 15%;
@@ -109,4 +115,9 @@ body{
 .weather-then-icon {
   width: 64px;
   height: 64px;
+}
+
+.err {
+  margin-top: 0;
+  margin-bottom: 0;
 }

@@ -1,53 +1,19 @@
-import './style.scss';
-import getMap from './modules/map';
-import stringCoord from './modules/stringCoord';
-import createImage from './modules/creator';
-import timer from './modules/timer';
-
-const moment = require('moment-timezone');
-
-// import { getCurWheather, getWheatherFuture } from './modules/weather';
+import stringCoord from './stringCoord';
+import getMap from './map';
+import createImage from './creator';
 
 const apiKeyWheather = 'fdc5de08c5fc4928a4473543202105';
-const dop = document.querySelector('.weather-now-dop');
-
-let searchUrlCurrent;
+const searchByCoordinates = () => `https://api.weatherapi.com/v1/forecast.json?key=${apiKeyWheather}&q=${lat},${lon}`;
 let searchUrlFut;
-const options = {
-  enableHighAccuracy: true,
-  timeout: 5000,
-  maximumAge: 0,
-};
-
-
-let timerId = timer();
-
-function success(pos) {
-  const crd = pos.coords;
-
-  const lat = crd.latitude.toFixed(2);
-  const lon = crd.longitude.toFixed(2);
-
-  document.querySelector('.map-def').remove();
-
-  searchUrlCurrent = () => `https://api.weatherapi.com/v1/forecast.json?key=${apiKeyWheather}&q=${lat},${lon}`; // Latitude and Longitude
-  searchUrlFut = () => `https://api.weatherapi.com/v1/forecast.json?key=${apiKeyWheather}&q=${lat},${lon}&days=3`; // Latitude and Longitude
-  getCurWheather();
-  getWheatherFuture();
-  getMap(lat, lon);
-}
-
-function error(err) {
-  console.warn(`ERROR(${err.code}): ${err.message}`);
-}
-
-navigator.geolocation.getCurrentPosition(success, error, options);
-
-const input = document.querySelector('.search-input');
-
+const dop = document.querySelector('.weather-now-dop');
 const getCurWheather = async (city) => {
   try {
-    const response = await fetch(searchUrlCurrent(city));
+    if (city) {
+      const response = await fetch(searchUrlCurrent(city));
+    } else {
+      const response = await fetch(searchByCoordinates());
+    }
+    console.dir(response);
     const {
       location: {
         name,
@@ -66,12 +32,6 @@ const getCurWheather = async (city) => {
         humidity,
       },
     } = await response.json();
-    console.log('timerId', timerId);
-    console.log('realTime', realTime);
-
-    const dateCur = document.querySelector('.date');
-    clearInterval(timerId);
-    timerId = timer(realTime, dateCur);
 
     if (document.querySelector('.weather-now-icon')) {
       document.querySelector('.weather-now-icon').remove();
@@ -93,25 +53,24 @@ const getCurWheather = async (city) => {
 
     getMap(lat, lon);
   } catch (e) {
-    console.log('getCurWheather: ', e);
-    console.log('pererr: ', city);
+    console.log('getCurWheather: ', e.message);
+    console.dir(e);
     document.querySelector('.err').innerText = `Не удалось найти город "${city}"`;
   }
 };
 
+
 const getWheatherFuture = async (city) => {
   console.log(searchUrlFut(city));
   try {
-    console.log('city: ', city);
+    console.log(city);
     const response = await fetch(searchUrlFut(city));
     const {
       forecast: { forecastday },
     } = await response.json();
     console.log('forecastday', forecastday);
     forecastday.forEach((item, index) => {
-      const { day: { avgtemp_c: avgtempC, avgtemp_f: avgtempF, condition: { icon } } } = item;
-      // console.warn(moment().add(1 + index, 'days').format('dddd Do MMMM'));
-      const date = moment().add(1 + index, 'days').format('dddd');
+      const { date, day: { avgtemp_c: avgtempC, avgtemp_f: avgtempF, condition: { icon } } } = item;
       document.querySelectorAll('.day')[index].innerText = date;
       document.querySelectorAll('.deg')[index].innerText = `${Math.ceil(avgtempC)}°`;
 
@@ -127,18 +86,4 @@ const getWheatherFuture = async (city) => {
   }
 };
 
-async function submitForm() {
-  const request = input.value;
-  document.querySelector('.err').innerText = 'Хорошего дня =)';
-
-  searchUrlCurrent = (city) => `https://api.weatherapi.com/v1/forecast.json?key=${apiKeyWheather}&q=${city}`;
-  searchUrlFut = (city) => `https://api.weatherapi.com/v1/forecast.json?key=${apiKeyWheather}&q=${city}&days=3`;
-  await getCurWheather(request);
-  await getWheatherFuture(request);
-}
-
-document.querySelector('.search').onsubmit = (event) => {
-  event.preventDefault();
-
-  submitForm();
-};
+export { getCurWheather, getWheatherFuture };
