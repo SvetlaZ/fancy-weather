@@ -3,6 +3,7 @@ import getMap from './modules/map';
 import stringCoord from './modules/stringCoord';
 import createImage from './modules/creator';
 import timer from './modules/timer';
+import getBackground from './modules/background';
 
 const moment = require('moment-timezone');
 
@@ -21,6 +22,8 @@ const options = {
 
 
 let timerId = timer();
+
+getBackground();
 
 function success(pos) {
   const crd = pos.coords;
@@ -58,11 +61,9 @@ const getCurWheather = async (city) => {
       },
       current: {
         temp_c: tempC,
-        temp_f: tempF,
         wind_kph: wind,
         condition: { text, icon },
         feelslike_c: feelLikeС,
-        feelslike_f: feelLikeF,
         humidity,
       },
     } = await response.json();
@@ -79,10 +80,10 @@ const getCurWheather = async (city) => {
 
     const img = createImage(`http:${icon}`, 'weather-now-icon');
     dop.before(img);
-    document.querySelector('.geo-text').innerText = `${name},\n${country}`;
+    document.querySelector('.geo-text').innerText = `${name}, ${country}`;
     document.querySelector('.weather-now-deg').innerText = `${Math.ceil(tempC)}°`;
     document.querySelector('.description').innerText = text;
-    document.querySelector('.feelLike').innerText = `feel like ${Math.ceil(feelLikeС)}°C`;
+    document.querySelector('.feelLike').innerText = `feel like ${Math.ceil(feelLikeС)}°`;
     document.querySelector('.wind').innerText = `wind: ${((Math.ceil(wind) * 1000) / 3600).toFixed()} m/s`;
     document.querySelector('.humidity').innerText = `humidity: ${humidity}%`;
 
@@ -109,8 +110,7 @@ const getWheatherFuture = async (city) => {
     } = await response.json();
     console.log('forecastday', forecastday);
     forecastday.forEach((item, index) => {
-      const { day: { avgtemp_c: avgtempC, avgtemp_f: avgtempF, condition: { icon } } } = item;
-      // console.warn(moment().add(1 + index, 'days').format('dddd Do MMMM'));
+      const { day: { avgtemp_c: avgtempC, condition: { icon } } } = item;
       const date = moment().add(1 + index, 'days').format('dddd');
       document.querySelectorAll('.day')[index].innerText = date;
       document.querySelectorAll('.deg')[index].innerText = `${Math.ceil(avgtempC)}°`;

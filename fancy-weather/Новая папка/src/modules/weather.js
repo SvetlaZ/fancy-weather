@@ -24,9 +24,11 @@ const getCurWheather = async (city) => {
       },
       current: {
         temp_c: tempC,
+        temp_f: tempF,
         wind_kph: wind,
         condition: { text, icon },
         feelslike_c: feelLikeС,
+        feelslike_f: feelLikeF,
         humidity,
       },
     } = await response.json();
@@ -68,7 +70,7 @@ const getWheatherFuture = async (city) => {
     } = await response.json();
     console.log('forecastday', forecastday);
     forecastday.forEach((item, index) => {
-      const { day: { avgtemp_c: avgtempC, condition: { icon } } } = item;
+      const { date, day: { avgtemp_c: avgtempC, avgtemp_f: avgtempF, condition: { icon } } } = item;
       document.querySelectorAll('.day')[index].innerText = date;
       document.querySelectorAll('.deg')[index].innerText = `${Math.ceil(avgtempC)}°`;
 

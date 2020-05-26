@@ -9,10 +9,10 @@ $tablet_max: 960px;
   font-weight: normal;
 }
 
-.background {
-  position: relative;
+body {
   margin: 0px;
   padding: 0px;
+  background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.4) ), url('./assets/background-def.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
@@ -163,7 +163,8 @@ $tablet_max: 960px;
   }
 }
 
-.map-pic {
+.map-pic,
+.map-def {
   width: 350px;
   height: 350px;
   margin-top: 15%;
