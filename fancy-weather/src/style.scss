@@ -19,13 +19,14 @@ $tablet_max: 960px;
   font-family: 'PT_Sans';
   height: 100vh;
   color: #fff;
+  transition: background-image 1s ease-in-out;
 }
 
 .control {
   display: flex;
   justify-content: space-between;
   padding-top: 5%;
-  margin: 0 15%;
+  margin: 0 5%;
   @media screen and (max-width: $mobile) {
     flex-direction: column;  
   }
@@ -46,8 +47,77 @@ $tablet_max: 960px;
   }
 }
 
-.button {
+.control-button {
   display: flex;
+  @media screen and (max-width: $mobile) {
+    justify-content: center;
+  }
+}
+
+.button {
+  width: 35px;
+  height: 35px;
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  border-radius: 6px;
+  border: 1px solid rgba(71, 73, 75, 0.2);
+  background: rgba(180, 184, 187, 0.7);
+  font-family: inherit;
+  color: #fff;
+  text-transform: uppercase;
+  margin-right: 10px;
+  outline: none;
+}
+
+.button:hover {
+  background: rgba(121, 121, 121, 0.7);
+}
+
+.no-active {
+  background: rgba(121, 121, 121, 0.7);
+  color: rgba(52, 56, 58, 0.7);
+  cursor: pointer;
+}
+
+.no-active:hover {
+  box-shadow: 0 0 10px 0 rgba(196, 196, 188, 0.6), 0 0 6px 0 rgba(196, 196, 188, 0.8), 0 0 10px 0 rgba(196, 196, 188, 0.6);
+}
+
+.change-pic {
+  background: rgba(180,184,187,.2) url(./assets/button.png) no-repeat bottom;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.lang {
+  width: 45px;
+  cursor: pointer;
+}
+
+.button-c {
+  margin-right: 0;
+  border-radius: 6px 0 0 6px;
+}
+
+.button-f {
+  border-radius: 0 6px 6px 0;
+}
+
+.form {
+  @media screen and (max-width: $mobile) {
+    margin-top: 15px;
+  }
+}
+
+.search {
+  position: relative;
+  display: -webkit-box;
+  display: flex;
+  margin-left: 2rem;
 }
 
 .geo-text {
@@ -131,7 +201,7 @@ $tablet_max: 960px;
   }
 }
 
-.deg {
+.degC, .degF {
   display: inline;
   font-size: 50px;
   @media screen and (max-width: $mobile) {
@@ -141,11 +211,20 @@ $tablet_max: 960px;
 }
 
 .search-input {
-  width: 80%;
+  width: 230px;
+  height: 35px;
+  border: 1px solid rgba(180,184,187, 0.5);
+  border-radius: 10px 0 0 10px;
+  padding: 5px;
+  background: rgba(76,82,85,0.7);
+  font-family: inherit;
+  color: #fff;
 }
 
 .search-btn {
   width: 15%;
+  border-radius: 0 10px 10px 0;
+  cursor: pointer;
 }
 
 .map {
@@ -168,7 +247,7 @@ $tablet_max: 960px;
   height: 350px;
   margin-top: 15%;
   margin-bottom: 5%;
-  border-radius: 15px;
+  border-radius: 50px 0 50px 0;
   @media screen and (max-width: $mobile) {
     width: 300px;
     height: 300px;
@@ -193,4 +272,9 @@ $tablet_max: 960px;
 .err {
   margin-top: 0;
   margin-bottom: 0;
+  text-align: center;
+}
+
+.hidden {
+  display: none;
 }

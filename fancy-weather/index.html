@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
     <link href="https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+          integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
     <link href="dist/style.css" rel="stylesheet">
     <title>Fancy-wheather</title>
 </head>
@@ -14,23 +16,21 @@
     <div class="wrapper">
 
       <div class="control">
-        <div class="button">
-          <button class="button change-pic" name="change">change-pic</button>
+        <div class="control-button">
+          <button class="button change-pic" name="change"><i class="fas fa-sync-alt"></i></button>
           <select class="button lang">
             <option value="en">en</option>
             <option value="ru">ru</option>
             <option value="by">by</option>
           </select>
-          <select class="button temp">
-            <option value="cel">&deg;C</option>  
-            <option value="far">&deg;F</option>  
-          </select>
+          <button class="button button-c">°C</button>
+          <button class="button button-f no-active">°F</button>
         </div>
 
         <div class="form">
           <form class="search" id="search">
             <input type="search" placeholder="Search city" class="search-input">
-            <button form="search" type="submit" class="search-btn">S</button>
+            <button form="search" type="submit" class="button search-btn"><i class="fas fa-search"></i></button>
           </form>
           <p class="err">Please, use search.</p>
         </div>
@@ -41,30 +41,34 @@
           <div class="date"></div>
 
           <div class="weather-now">
-            <p class="weather-now-deg">10&deg;C</p>
+            <p class="weather-now-deg">
+              <span class="now-cels"></span>
+              <span class="now-far hidden"></span>
+            </p>
             <div class="weather-now-dop">
-              <p class="dop description">overcast</p>
-              <p class="dop feelLike">feel like 8&deg;C</p>
-              <p class="dop wind">wind: 2 m/c</p>
-              <p class="dop humidity">humidity: 80%</p>
+              <p class="dop description"></p>
+              <p class="dop feelLikeC"></p>
+              <p class="dop feelLikeF hidden"></p>
+              <p class="dop wind"></p>
+              <p class="dop humidity"></p>
             </div>
           </div>
 
           <div class="weather-then">
             <div class="then">
-              <p class="then-text day">tuesday</p>
-              <p class="then-text deg">7&deg;C</p>
-              <!-- <p class="then-text icon"></p> -->
+              <p class="then-text day"></p>
+              <p class="then-text degC"></p>
+              <p class="then-text degF hidden"></p>
             </div>
             <div class="then">
-              <p class="then-text day">wednesday</p>
-              <p class="then-text deg">10&deg;C</p>
-              <!-- <p class="then-text icon"></p> -->
+              <p class="then-text day"></p>
+              <p class="then-text degC"></p>
+              <p class="then-text degF hidden"></p>
             </div>
             <div class="then">
-              <p class="then-text day">thursday</p>
-              <p class="then-text deg">15&deg;C</p>
-              <!-- <p class="then-text icon"></p> -->
+              <p class="then-text day"></p>
+              <p class="then-text degC"></p>
+              <p class="then-text degF hidden"></p>
             </div>
           </div>
         </div> 
@@ -73,8 +77,8 @@
           <div class="map">
             <div class="map-pic" id="map"></div>
             <img src="" alt="map" class="map-def">
-            <p class="map-text lat">56.667798</p>
-            <p class="map-text lon">78.879879</p>
+            <p class="map-text lat"></p>
+            <p class="map-text lon"></p>
           </div>
         </div>
       </div>
