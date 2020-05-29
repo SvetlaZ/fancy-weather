@@ -247,7 +247,7 @@ $tablet_max: 960px;
   height: 350px;
   margin-top: 15%;
   margin-bottom: 5%;
-  border-radius: 50px 0 50px 0;
+  clip-path: polygon(51% 4%, 100% 0, 100% 35%, 98% 63%, 92% 86%, 65% 96%, 0 100%, 0% 70%, 4% 36%, 15% 8%);
   @media screen and (max-width: $mobile) {
     width: 300px;
     height: 300px;
