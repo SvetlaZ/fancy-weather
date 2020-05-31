@@ -5,6 +5,9 @@ import createImage from './modules/creator';
 import timer from './modules/timer';
 import getBackground from './modules/background';
 import { getdegF, getdegC } from './modules/unitsTemp';
+// import translateTo from './modules/translator';
+import translate from './modules/translations';
+import getSpeech from './modules/speaker';
 
 const moment = require('moment-timezone');
 
@@ -24,10 +27,17 @@ const options = {
   maximumAge: 0,
 };
 
-
 let timerId = timer();
 
 getBackground();
+
+//  НЕ РАБОТАЕТ!!!!
+// const langSelect = document.querySelector('.lang');
+// langSelect.addEventListener('change', (e) => {
+//   console.log('change: ', e.target.value);
+//   const chooseLang = langSelect.value;
+//   translateTo(chooseLang);
+// });
 
 function success(pos) {
   const crd = pos.coords;
@@ -86,19 +96,25 @@ const getCurWheather = async (city) => {
 
     const img = createImage(`http:${icon}`, 'weather-now-icon');
     dop.before(img);
-    document.querySelector('.geo-text').innerText = `${name}, ${country}`;
+    document.querySelector('.geo-text').innerText = `${name},\n${country}`; // перевед яндексом
     document.querySelector('.weather-now-deg .now-cels').innerText = `${Math.ceil(tempC)}°`;
     document.querySelector('.weather-now-deg .now-far').innerText = `${Math.ceil(tempF)}°`;
-    document.querySelector('.description').innerText = text;
-    document.querySelector('.feelLikeC').innerText = `feel like ${Math.ceil(feelLikeС)}°`;
-    document.querySelector('.feelLikeF').innerText = `feel like ${Math.ceil(feelLikeF)}°`;
-    document.querySelector('.wind').innerText = `wind: ${((Math.ceil(wind) * 1000) / 3600).toFixed()} m/s`;
-    document.querySelector('.humidity').innerText = `humidity: ${humidity}%`;
+    document.querySelector('.description').innerText = text; // перевед яндексом
+    const fLikeC = document.querySelector('.feelLikeC').innerText;
+    document.querySelector('.feelLikeC').innerText = `${fLikeC}:  ${Math.ceil(feelLikeС)}°`;
+    const fLikeF = document.querySelector('.feelLikeF').innerText;
+    document.querySelector('.feelLikeF').innerText = `${fLikeF}:  ${Math.ceil(feelLikeF)}°`;
+    const windSpeed = document.querySelector('.wind').innerText;
+    document.querySelector('.wind').innerText = `${windSpeed}: ${((Math.ceil(wind) * 1000) / 3600).toFixed()} m/s`;
+    const humid = document.querySelector('.humidity').innerText;
+    document.querySelector('.humidity').innerText = `${humid}: ${humidity}%`;
 
     const latS = stringCoord(lat);
     const lonS = stringCoord(lon);
-    document.querySelector('.lat').innerText = `Latitude: ${latS}`;
-    document.querySelector('.lon').innerText = `Longitude: ${lonS}`;
+    const latitude = document.querySelector('.lat').innerText;
+    document.querySelector('.lat').innerText = `${latitude} ${latS}`;
+    const longitude = document.querySelector('.lon').innerText;
+    document.querySelector('.lon').innerText = `${longitude} ${lonS}`;
 
     getMap(lat, lon);
   } catch (e) {
@@ -120,7 +136,7 @@ const getWheatherFuture = async (city) => {
     forecastday.forEach((item, index) => {
       const { day: { avgtemp_c: avgtempC, avgtemp_f: avgtempF, condition: { icon } } } = item;
       const date = moment().add(1 + index, 'days').format('dddd');
-      document.querySelectorAll('.day')[index].innerText = date;
+      document.querySelectorAll('.day')[index].innerText = date; // перевод яндекс
       document.querySelectorAll('.degC')[index].innerText = `${Math.ceil(avgtempC)}°`;
       document.querySelectorAll('.degF')[index].innerText = `${Math.ceil(avgtempF)}°`;
 
@@ -142,7 +158,7 @@ async function submitForm() {
 
   searchUrlCurrent = (city) => `https://api.weatherapi.com/v1/forecast.json?key=${apiKeyWheather}&q=${city}`;
   searchUrlFut = (city) => `https://api.weatherapi.com/v1/forecast.json?key=${apiKeyWheather}&q=${city}&days=3`;
-  getBackground();
+  await getBackground();
   await getCurWheather(request);
   await getWheatherFuture(request);
 }
@@ -170,3 +186,25 @@ buttonC.onclick = () => {
 if (unitTemp === 'F') {
   getdegF();
 }
+
+const elementToTranslate = document.querySelectorAll('[data-i18n]');
+console.log('elementToTranslate: ', elementToTranslate);
+console.log('Translate: ', translate);
+const langSelect = document.querySelector('.lang');
+langSelect.addEventListener('change', (e) => {
+  console.log('change: ', e.target.value);
+  const lang = langSelect.value;
+
+  for (let i = 0; i < elementToTranslate.length; i += 1) {
+    const key = elementToTranslate[i].dataset.i18n;
+    elementToTranslate[i].innerText = translate[lang][key];
+  }
+});
+
+
+const recognizer = new webkitSpeechRecognition();
+const buttonMic = document.querySelector('.search-input-btn');
+buttonMic.onclick = () => {
+  getSpeech();
+  // recognizer.start();
+};

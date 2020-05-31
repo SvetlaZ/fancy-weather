@@ -29,10 +29,11 @@
 
         <div class="form">
           <form class="search" id="search">
-            <input type="search" placeholder="Search city" class="search-input">
+            <input type="search" placeholder="Search city" class="search-input" data-i18n="placeholder">
             <button form="search" type="submit" class="button search-btn"><i class="fas fa-search"></i></button>
+            <button type="button" class="search-input-btn"><i class="fas fa-microphone"></i></button>
           </form>
-          <p class="err">Please, use search.</p>
+          <p class="err" data-i18n="err">Please, use search.</p>
         </div>
       </div>
       <div class="wrapper-col">
@@ -46,27 +47,39 @@
               <span class="now-far hidden"></span>
             </p>
             <div class="weather-now-dop">
-              <p class="dop description"></p>
-              <p class="dop feelLikeC"></p>
-              <p class="dop feelLikeF hidden"></p>
-              <p class="dop wind"></p>
-              <p class="dop humidity"></p>
+              <p class="dop description" data-i18n="description"></p>
+              <p class="dop dopC" >
+                <span data-i18n="feelLikeC">feel like</span>
+                <span class="feelLikeC"></span>
+              </p>
+              <p class="dop dopF hidden" data-i18n="feelLikeF">
+                <span data-i18n="feelLikeF">feel like</span>
+                <span class="feelLikeF"></span>
+              </p>
+              <p class="dop">
+                <span data-i18n="wind">wind</span>
+                <span  class="wind"></span> 
+              </p>
+              <p class="dop">
+                <span data-i18n="humidity">humidity</span>
+                <span class="humidity"></span>
+              </p>
             </div>
           </div>
 
           <div class="weather-then">
             <div class="then">
-              <p class="then-text day"></p>
+              <p class="then-text day" data-i18n="day1"></p>
               <p class="then-text degC"></p>
               <p class="then-text degF hidden"></p>
             </div>
             <div class="then">
-              <p class="then-text day"></p>
+              <p class="then-text day" data-i18n="day2"></p>
               <p class="then-text degC"></p>
               <p class="then-text degF hidden"></p>
             </div>
             <div class="then">
-              <p class="then-text day"></p>
+              <p class="then-text day" data-i18n="day3"></p>
               <p class="then-text degC"></p>
               <p class="then-text degF hidden"></p>
             </div>
@@ -77,8 +90,14 @@
           <div class="map">
             <div class="map-pic" id="map"></div>
             <img src="" alt="map" class="map-def">
-            <p class="map-text lat"></p>
-            <p class="map-text lon"></p>
+            <p class="map-text">
+              <span data-i18n="lat">Latitude: </span>
+              <span class="lat"></span>
+            </p>
+            <p class="map-text">
+              <span data-i18n="lon">Longitude:</span>
+              <span class="lon"></span> 
+            </p>
           </div>
         </div>
       </div>

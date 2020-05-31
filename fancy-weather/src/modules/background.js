@@ -3,14 +3,14 @@ const moment = require('moment-timezone');
 const apiKeyPic = 'pigQDjaBlkcZ2JFX4O3-fRy3oVcqSqaPXyrxI3hc8NY';
 const hours = moment().format('HH');
 let dayTime = 'day';
-if (hours > 20 || hours < 6) {
-  dayTime = 'night';
-}
 
 const searchUrlPic = `https://api.unsplash.com/photos/random?orientation=landscape&per_page=1&query=spring,nature,${dayTime}&client_id=${apiKeyPic}`;
 
 const getBackground = async () => {
   try {
+    if (hours > 20 || hours < 6) {
+      dayTime = 'night';
+    }
     const responce = await fetch(searchUrlPic);
     const {
       urls: { regular },
