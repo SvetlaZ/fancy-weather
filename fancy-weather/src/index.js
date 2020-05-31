@@ -7,10 +7,9 @@ import getBackground from './modules/background';
 import changeUnit from './modules/unitsTemp';
 import { translateTo, getTranslate } from './modules/translator';
 import getSpeech from './modules/speaker';
+import icons from './modules/icons';
 
 const moment = require('moment-timezone');
-
-// import { getCurWheather, getWheatherFuture } from './modules/weather';
 
 const apiKeyWheather = 'fdc5de08c5fc4928a4473543202105';
 const dop = document.querySelector('.weather-now-dop');
@@ -40,7 +39,7 @@ langSelect.addEventListener('change', () => {
   const description = document.querySelector('.description').innerText;
   getTranslate(city, oldLang, chooseLang, 'geo-text');
   getTranslate(description, oldLang, chooseLang, 'description');
-
+  moment.lang(chooseLang);
   oldLang = chooseLang;
 });
 
@@ -61,7 +60,7 @@ const getCurWheather = async (city) => {
         temp_c: tempC,
         temp_f: tempF,
         wind_kph: wind,
-        condition: { text, icon },
+        condition: { text, code },
         feelslike_c: feelLikeС,
         feelslike_f: feelLikeF,
         humidity,
@@ -76,7 +75,7 @@ const getCurWheather = async (city) => {
       document.querySelector('.weather-now-icon').remove();
     }
 
-    const img = createImage(`http:${icon}`, 'weather-now-icon');
+    const img = createImage(icons[code], 'weather-now-icon');
     dop.before(img);
     document.querySelector('.geo-text').innerText = `${name},\n${country}`;
     document.querySelector('.weather-now-deg .now-cels').innerText = `${Math.ceil(tempC)}°`;
@@ -107,7 +106,7 @@ const getWheatherFuture = async (city) => {
     } = await response.json();
 
     forecastday.forEach((item, index) => {
-      const { day: { avgtemp_c: avgtempC, avgtemp_f: avgtempF, condition: { icon } } } = item;
+      const { day: { avgtemp_c: avgtempC, avgtemp_f: avgtempF, condition: { code } } } = item;
       const date = moment().add(1 + index, 'days').format('dddd');
       document.querySelectorAll('.day')[index].innerText = date;
       document.querySelectorAll('.day')[index].dataset.i18n = date.toLocaleLowerCase();
@@ -118,7 +117,7 @@ const getWheatherFuture = async (city) => {
         document.querySelectorAll('.weather-then-icon')[index].remove();
       }
 
-      const iconF = createImage(`http:${icon}`, 'weather-then-icon');
+      const iconF = createImage(icons[code], 'weather-then-icon');
       document.querySelectorAll('.then')[index].append(iconF);
     });
   } catch (e) {
