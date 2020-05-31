@@ -18,6 +18,7 @@ const getBackground = async () => {
     document.querySelector('.background').style.backgroundImage = `linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.4) ), url('${regular}')`;
   } catch (e) {
     console.log('getBackground: ', e);
+    document.querySelector('.background').style.backgroundImage = 'linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.4) ), url(\'../assets/background-def.jpg\')';
   }
 };
 

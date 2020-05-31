@@ -4,9 +4,8 @@ import stringCoord from './modules/stringCoord';
 import createImage from './modules/creator';
 import timer from './modules/timer';
 import getBackground from './modules/background';
-import { getdegF, getdegC } from './modules/unitsTemp';
-// import translateTo from './modules/translator';
-import translate from './modules/translations';
+import changeUnit from './modules/unitsTemp';
+import translateTo from './modules/translator';
 import getSpeech from './modules/speaker';
 
 const moment = require('moment-timezone');
@@ -31,13 +30,11 @@ let timerId = timer();
 
 getBackground();
 
-//  НЕ РАБОТАЕТ!!!!
-// const langSelect = document.querySelector('.lang');
-// langSelect.addEventListener('change', (e) => {
-//   console.log('change: ', e.target.value);
-//   const chooseLang = langSelect.value;
-//   translateTo(chooseLang);
-// });
+const langSelect = document.querySelector('.lang');
+langSelect.addEventListener('change', () => {
+  const chooseLang = langSelect.value;
+  translateTo(chooseLang);
+});
 
 function success(pos) {
   const crd = pos.coords;
@@ -96,25 +93,19 @@ const getCurWheather = async (city) => {
 
     const img = createImage(`http:${icon}`, 'weather-now-icon');
     dop.before(img);
-    document.querySelector('.geo-text').innerText = `${name},\n${country}`; // перевед яндексом
+    document.querySelector('.geo-text').innerText = `${name},\n${country}`; // перевод яндексом
     document.querySelector('.weather-now-deg .now-cels').innerText = `${Math.ceil(tempC)}°`;
     document.querySelector('.weather-now-deg .now-far').innerText = `${Math.ceil(tempF)}°`;
-    document.querySelector('.description').innerText = text; // перевед яндексом
-    const fLikeC = document.querySelector('.feelLikeC').innerText;
-    document.querySelector('.feelLikeC').innerText = `${fLikeC}:  ${Math.ceil(feelLikeС)}°`;
-    const fLikeF = document.querySelector('.feelLikeF').innerText;
-    document.querySelector('.feelLikeF').innerText = `${fLikeF}:  ${Math.ceil(feelLikeF)}°`;
-    const windSpeed = document.querySelector('.wind').innerText;
-    document.querySelector('.wind').innerText = `${windSpeed}: ${((Math.ceil(wind) * 1000) / 3600).toFixed()} m/s`;
-    const humid = document.querySelector('.humidity').innerText;
-    document.querySelector('.humidity').innerText = `${humid}: ${humidity}%`;
+    document.querySelector('.description').innerText = text; // перевод яндексом
+    document.querySelector('.feelLikeC').innerText = `${Math.ceil(feelLikeС)}°`;
+    document.querySelector('.feelLikeF').innerText = `${Math.ceil(feelLikeF)}°`;
+    document.querySelector('.wind').innerText = `${((Math.ceil(wind) * 1000) / 3600).toFixed()} m/s`;
+    document.querySelector('.humidity').innerText = `${humidity}%`;
 
     const latS = stringCoord(lat);
     const lonS = stringCoord(lon);
-    const latitude = document.querySelector('.lat').innerText;
-    document.querySelector('.lat').innerText = `${latitude} ${latS}`;
-    const longitude = document.querySelector('.lon').innerText;
-    document.querySelector('.lon').innerText = `${longitude} ${lonS}`;
+    document.querySelector('.lat').innerText = `${latS}`;
+    document.querySelector('.lon').innerText = `${lonS}`;
 
     getMap(lat, lon);
   } catch (e) {
@@ -174,37 +165,24 @@ document.querySelector('.change-pic').onclick = () => {
 };
 
 buttonF.onclick = () => {
-  localStorage.setItem('temp', 'F');
-  getdegF();
+  if (buttonF.classList.contains('no-active')) {
+    localStorage.setItem('temp', 'F');
+    changeUnit();
+  }
 };
 
 buttonC.onclick = () => {
-  localStorage.setItem('temp', 'C');
-  getdegC();
+  if (buttonC.classList.contains('no-active')) {
+    localStorage.setItem('temp', 'C');
+    changeUnit();
+  }
 };
 
 if (unitTemp === 'F') {
-  getdegF();
+  changeUnit();
 }
 
-const elementToTranslate = document.querySelectorAll('[data-i18n]');
-console.log('elementToTranslate: ', elementToTranslate);
-console.log('Translate: ', translate);
-const langSelect = document.querySelector('.lang');
-langSelect.addEventListener('change', (e) => {
-  console.log('change: ', e.target.value);
-  const lang = langSelect.value;
-
-  for (let i = 0; i < elementToTranslate.length; i += 1) {
-    const key = elementToTranslate[i].dataset.i18n;
-    elementToTranslate[i].innerText = translate[lang][key];
-  }
-});
-
-
-const recognizer = new webkitSpeechRecognition();
 const buttonMic = document.querySelector('.search-input-btn');
 buttonMic.onclick = () => {
   getSpeech();
-  // recognizer.start();
 };

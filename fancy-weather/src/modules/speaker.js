@@ -1,5 +1,7 @@
 function getSpeech() {
-  const recognizer = new webkitSpeechRecognition();
+  const SpeechRecognition = window.webkitSpeechRecognition;
+  const recognizer = new SpeechRecognition();
+
   recognizer.interimResults = true;
   recognizer.lang = 'ru-Ru' || 'en-US' || 'be';
   recognizer.onresult = (event) => {
