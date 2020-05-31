@@ -5,7 +5,7 @@ import createImage from './modules/creator';
 import timer from './modules/timer';
 import getBackground from './modules/background';
 import changeUnit from './modules/unitsTemp';
-import translateTo from './modules/translator';
+import { translateTo, getTranslate } from './modules/translator';
 import getSpeech from './modules/speaker';
 
 const moment = require('moment-timezone');
@@ -30,32 +30,19 @@ let timerId = timer();
 
 getBackground();
 
+
 const langSelect = document.querySelector('.lang');
+let oldLang = document.querySelector('.lang').value;
 langSelect.addEventListener('change', () => {
   const chooseLang = langSelect.value;
   translateTo(chooseLang);
+  const city = document.querySelector('.geo-text').innerText;
+  const description = document.querySelector('.description').innerText;
+  getTranslate(city, oldLang, chooseLang, 'geo-text');
+  getTranslate(description, oldLang, chooseLang, 'description');
+
+  oldLang = chooseLang;
 });
-
-function success(pos) {
-  const crd = pos.coords;
-
-  const lat = crd.latitude.toFixed(2);
-  const lon = crd.longitude.toFixed(2);
-
-  document.querySelector('.map-def').remove();
-
-  searchUrlCurrent = () => `https://api.weatherapi.com/v1/forecast.json?key=${apiKeyWheather}&q=${lat},${lon}`; // Latitude and Longitude
-  searchUrlFut = () => `https://api.weatherapi.com/v1/forecast.json?key=${apiKeyWheather}&q=${lat},${lon}&days=3`; // Latitude and Longitude
-  getCurWheather();
-  getWheatherFuture();
-  getMap(lat, lon);
-}
-
-function error(err) {
-  console.warn(`ERROR(${err.code}): ${err.message}`);
-}
-
-navigator.geolocation.getCurrentPosition(success, error, options);
 
 const input = document.querySelector('.search-input');
 
@@ -80,8 +67,6 @@ const getCurWheather = async (city) => {
         humidity,
       },
     } = await response.json();
-    console.log('timerId', timerId);
-    console.log('realTime', realTime);
 
     const dateCur = document.querySelector('.date');
     clearInterval(timerId);
@@ -93,10 +78,10 @@ const getCurWheather = async (city) => {
 
     const img = createImage(`http:${icon}`, 'weather-now-icon');
     dop.before(img);
-    document.querySelector('.geo-text').innerText = `${name},\n${country}`; // перевод яндексом
+    document.querySelector('.geo-text').innerText = `${name},\n${country}`;
     document.querySelector('.weather-now-deg .now-cels').innerText = `${Math.ceil(tempC)}°`;
     document.querySelector('.weather-now-deg .now-far').innerText = `${Math.ceil(tempF)}°`;
-    document.querySelector('.description').innerText = text; // перевод яндексом
+    document.querySelector('.description').innerText = text;
     document.querySelector('.feelLikeC').innerText = `${Math.ceil(feelLikeС)}°`;
     document.querySelector('.feelLikeF').innerText = `${Math.ceil(feelLikeF)}°`;
     document.querySelector('.wind').innerText = `${((Math.ceil(wind) * 1000) / 3600).toFixed()} m/s`;
@@ -109,25 +94,23 @@ const getCurWheather = async (city) => {
 
     getMap(lat, lon);
   } catch (e) {
-    console.log('getCurWheather: ', e);
-    console.log('pererr: ', city);
     document.querySelector('.err').innerText = `Не удалось найти город "${city}"`;
   }
 };
 
 const getWheatherFuture = async (city) => {
-  console.log(searchUrlFut(city));
   try {
     console.log('city: ', city);
     const response = await fetch(searchUrlFut(city));
     const {
       forecast: { forecastday },
     } = await response.json();
-    console.log('forecastday', forecastday);
+
     forecastday.forEach((item, index) => {
       const { day: { avgtemp_c: avgtempC, avgtemp_f: avgtempF, condition: { icon } } } = item;
       const date = moment().add(1 + index, 'days').format('dddd');
-      document.querySelectorAll('.day')[index].innerText = date; // перевод яндекс
+      document.querySelectorAll('.day')[index].innerText = date;
+      document.querySelectorAll('.day')[index].dataset.i18n = date.toLocaleLowerCase();
       document.querySelectorAll('.degC')[index].innerText = `${Math.ceil(avgtempC)}°`;
       document.querySelectorAll('.degF')[index].innerText = `${Math.ceil(avgtempF)}°`;
 
@@ -139,9 +122,32 @@ const getWheatherFuture = async (city) => {
       document.querySelectorAll('.then')[index].append(iconF);
     });
   } catch (e) {
-    console.log('getWheatherFuture', e);
+    console.warn('getWheatherFuture', e);
   }
 };
+
+function success(pos) {
+  const crd = pos.coords;
+  const lat = crd.latitude.toFixed(2);
+  const lon = crd.longitude.toFixed(2);
+
+  searchUrlCurrent = () => `https://api.weatherapi.com/v1/forecast.json?key=${apiKeyWheather}&q=${lat},${lon}`; // Latitude and Longitude
+  searchUrlFut = () => `https://api.weatherapi.com/v1/forecast.json?key=${apiKeyWheather}&q=${lat},${lon}&days=3`; // Latitude and Longitude
+  getCurWheather();
+  getWheatherFuture();
+  getMap(lat, lon);
+}
+
+function error(err) {
+  console.warn(`ERROR(${err.code}): ${err.message}`);
+  searchUrlCurrent = (city) => `https://api.weatherapi.com/v1/forecast.json?key=${apiKeyWheather}&q=${city}`;
+  searchUrlFut = (city) => `https://api.weatherapi.com/v1/forecast.json?key=${apiKeyWheather}&q=${city}&days=3`;
+  getBackground();
+  getCurWheather('Moscow');
+  getWheatherFuture('Moscow');
+}
+
+navigator.geolocation.getCurrentPosition(success, error, options);
 
 async function submitForm() {
   const request = input.value;

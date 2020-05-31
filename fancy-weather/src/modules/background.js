@@ -11,6 +11,7 @@ const getBackground = async () => {
     if (hours > 20 || hours < 6) {
       dayTime = 'night';
     }
+    console.log('Время суток: ', dayTime);
     const responce = await fetch(searchUrlPic);
     const {
       urls: { regular },

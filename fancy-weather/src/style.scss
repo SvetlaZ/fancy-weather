@@ -81,7 +81,7 @@ $tablet_max: 960px;
   position: absolute;
   z-index: 1;
   top: .1rem;
-  right: 3.1rem;
+  right: 3.4rem;
   width: 2.5rem;
   height: 2rem;
   background: none;
@@ -153,6 +153,7 @@ $tablet_max: 960px;
 
 .date {
   font-size: 18px;
+  text-transform: uppercase;
   @media screen and (max-width: $mobile) {
     text-align: center;
   }
