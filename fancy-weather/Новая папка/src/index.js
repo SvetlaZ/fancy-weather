@@ -39,7 +39,7 @@ langSelect.addEventListener('change', () => {
   const description = document.querySelector('.description').innerText;
   getTranslate(city, oldLang, chooseLang, 'geo-text');
   getTranslate(description, oldLang, chooseLang, 'description');
-  moment.locale(chooseLang);
+  moment.lang(chooseLang);
   oldLang = chooseLang;
 });
 
@@ -99,6 +99,7 @@ const getCurWheather = async (city) => {
 
 const getWheatherFuture = async (city) => {
   try {
+    console.log('city: ', city);
     const response = await fetch(searchUrlFut(city));
     const {
       forecast: { forecastday },

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+          integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+    <link href="dist/style.css" rel="stylesheet">
+    <title>Fancy-wheather</title>
+</head>
+
+<body class="background">
+    <div class="wrapper">
+
+      <div class="control">
+        <div class="control-button">
+          <button class="button change-pic" name="change"><i class="fas fa-sync-alt"></i></button>
+          <select class="button lang">
+            <option value="en">en</option>
+            <option value="ru">ru</option>
+            <option value="be">be</option>
+          </select>
+          <button class="button button-c">°C</button>
+          <button class="button button-f no-active">°F</button>
+        </div>
+
+        <div class="form">
+          <form class="search" id="search">
+            <input type="search" placeholder="Search city" class="search-input" data-i18n="placeholder">
+            <button form="search" type="submit" class="button search-btn"><i class="fas fa-search"></i></button>
+            <button type="button" class="search-input-btn"><i class="fas fa-microphone"></i></button>
+          </form>
+          <p class="err" data-i18n="err">Please, use search.</p>
+        </div>
+      </div>
+      <div class="wrapper-col">
+        <div class="col col-1">
+          <div class="geo"><p class="geo-text"></p></div>
+          <div class="date"></div>
+
+          <div class="weather-now">
+            <p class="weather-now-deg">
+              <span class="now-cels"></span>
+              <span class="now-far hidden"></span>
+            </p>
+            <div class="weather-now-dop">
+              <p class="dop description"></p>
+              <p class="dop dopC feels" >
+                <span data-i18n="feelLike">feel like:</span>
+                <span class="degree feelLikeC"></span>
+                <span class="degree feelLikeF hidden"></span>
+              </p>
+              <p class="dop">
+                <span data-i18n="wind">wind</span>
+                <span  class="wind"></span> 
+              </p>
+              <p class="dop">
+                <span data-i18n="humidity">humidity</span>
+                <span class="humidity"></span>
+              </p>
+            </div>
+          </div>
+
+          <div class="weather-then">
+            <div class="then">
+              <p class="then-text day"></p>
+              <p class="then-text degree degC"></p>
+              <p class="then-text degree degF hidden"></p>
+            </div>
+            <div class="then">
+              <p class="then-text day"></p>
+              <p class="then-text degree degC"></p>
+              <p class="then-text degree degF hidden"></p>
+            </div>
+            <div class="then">
+              <p class="then-text day"></p>
+              <p class="then-text degree degC"></p>
+              <p class="then-text degree degF hidden"></p>
+            </div>
+          </div>
+        </div> 
+
+        <div class="col col-2">
+          <div class="map">
+            <div class="map-pic" id="map"></div>
+            <p class="map-text">
+              <span data-i18n="lat">Latitude: </span>
+              <span class="lat"></span>
+            </p>
+            <p class="map-text">
+              <span data-i18n="lon">Longitude:</span>
+              <span class="lon"></span> 
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>   
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.js"></script>
+    <script src="./dist/index.js"></script>
+</body>
+
+</html>

@@ -5,10 +5,6 @@ function translateTo(lang) {
 
   for (let i = 0; i < elementToTranslate.length; i += 1) {
     const key = elementToTranslate[i].dataset.i18n;
-    if (elementToTranslate[i].placeholder) {
-      elementToTranslate[i].placeholder = translate[lang][key];
-    }
-
     elementToTranslate[i].innerText = translate[lang][key];
   }
 }
