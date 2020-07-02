@@ -1,2 +1,2 @@
-# svetlaz-RS2020Q1
-Private repository for @svetlaz
+DEMO:
+https://omahjong.com/fancy-weather/
